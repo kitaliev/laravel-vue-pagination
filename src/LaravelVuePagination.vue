@@ -19,7 +19,7 @@
 
             <li class="page-item pagination-prev-nav" :class="{'disabled': computed.currentPage === 1}" v-if="computed.currentPage !== 1 || showDisabled">
                 <a class="page-link" href="#" aria-label="First Page" :tabindex="computed.currentPage !== 1 && -1" v-on="pageButtonEvents(1)">
-                    <slot name="double-prev-nav">
+                    <slot name="first-nav">
                         <span aria-hidden="true">&larr;</span>
                         <span class="sr-only">First Page</span>
                     </slot>
@@ -58,7 +58,7 @@
 
             <li class="page-item pagination-next-nav" :class="{'disabled': computed.lastPage === computed.currentPage}" v-if="computed.lastPage !== computed.currentPage || showDisabled">
                 <a class="page-link" href="#" aria-label="Last Page" :tabindex="computed.lastPage !== computed.currentPage && -1" v-on="pageButtonEvents(computed.lastPage)">
-                    <slot name="next-nav">
+                    <slot name="last-nav">
                         <span aria-hidden="true">&rarr;</span>
                         <span class="sr-only">Last Page</span>
                     </slot>
