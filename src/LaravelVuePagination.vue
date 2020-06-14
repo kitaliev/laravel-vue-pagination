@@ -17,6 +17,15 @@
             v-if="computed.total > computed.perPage"
             slot-scope="{ data, limit, showDisabled, size, align, computed, prevButtonEvents, nextButtonEvents, pageButtonEvents }">
 
+            <li class="page-item pagination-prev-nav" :class="{'disabled': computed.currentPage === 1}" v-if="computed.currentPage !== 1 || showDisabled">
+                <a class="page-link" href="#" aria-label="First Page" :tabindex="computed.currentPage !== 1 && -1" v-on="pageButtonEvents(1)">
+                    <slot name="double-prev-nav">
+                        <span aria-hidden="true">&larr;</span>
+                        <span class="sr-only">First Page</span>
+                    </slot>
+                </a>
+            </li>
+
             <li class="page-item pagination-prev-nav" :class="{'disabled': !computed.prevPageUrl}" v-if="computed.prevPageUrl || showDisabled">
                 <a class="page-link" href="#" aria-label="Previous" :tabindex="!computed.prevPageUrl && -1" v-on="prevButtonEvents">
                     <slot name="prev-nav">
@@ -28,8 +37,13 @@
 
             <li class="page-item pagination-page-nav" v-for="(page, key) in computed.pageRange" :key="key" :class="{ 'active': page == computed.currentPage }">
                 <a class="page-link" href="#" v-on="pageButtonEvents(page)">
-                    {{ page }}
-                    <span class="sr-only" v-if="page == computed.currentPage">(current)</span>
+                    <slot name="current-nav" v-if="page == computed.currentPage">
+                        {{ page }}
+                        <span class="sr-only">(current)</span>
+                    </slot>
+                    <slot name="page-nav" v-else>
+                        {{ page }}
+                    </slot>
                 </a>
             </li>
 
@@ -42,13 +56,22 @@
                 </a>
             </li>
 
+            <li class="page-item pagination-next-nav" :class="{'disabled': computed.lastPage === computed.currentPage}" v-if="computed.lastPage !== computed.currentPage || showDisabled">
+                <a class="page-link" href="#" aria-label="Last Page" :tabindex="computed.lastPage !== computed.currentPage && -1" v-on="pageButtonEvents(computed.lastPage)">
+                    <slot name="next-nav">
+                        <span aria-hidden="true">&rarr;</span>
+                        <span class="sr-only">Last Page</span>
+                    </slot>
+                </a>
+            </li>
+
         </ul>
 
     </renderless-laravel-vue-pagination>
 </template>
 
 <script>
-import RenderlessLaravelVuePagination from './RenderlessLaravelVuePagination.vue';
+import RenderlessLaravelVuePagination from './RenderlessLaravelVuePagination.vue'
 
 export default {
     props: {
